@@ -1,0 +1,33 @@
+{
+  "db": {
+    "port": "9090",
+    "jdbcUrl": "jdbc:h2:mem:mydb;MODE=MYSQL",
+    "username": "sa",
+    "password": "",
+    "database_driver" : "H2",
+    "warehouse_number": 1,
+    "driver_class_name": "org.h2.Driver",
+    "max_connections_pool": 100,
+    "max_connections_idle": 10,
+    "min_connections_idle": 5,
+    "max_wait_millis_conn": 10000
+  },
+  "api": {
+    "ports": [8081,8082],
+    "project": "spring-webflux"
+  },
+  "benchmark":{
+    "result_path": "target//Results//WebFluxNginx2",
+    "simultaneous_requests": [10,100,500,1000,2000],
+    "durationSeconds":50,
+    "rampUpSeconds": 10
+  },
+  "ngnix": {
+    "enable": true,
+    "port": 8080,
+    "path": "../../../nginx-1.25.4",
+    "conf": "../../../nginx-1.25.4/conf"
+  },
+  "url": "jdbc:h2:tcp://localhost:9090/mem:mydb",
+  "asyncParallelismDispatcher": 128
+}

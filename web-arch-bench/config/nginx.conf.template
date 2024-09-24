@@ -1,0 +1,39 @@
+worker_processes auto;  # Automatically sets based on available CPU cores
+worker_rlimit_nofile 4096;
+#worker_rlimit_core unlimited; #Comment this when running in Windows
+
+http{
+    include mime.types;
+    keepalive_timeout 100;
+    client_header_timeout 12;
+    send_timeout 60;
+
+    client_body_buffer_size 16K;
+    client_max_body_size 10M;
+    client_body_timeout 12;
+
+    proxy_buffer_size 16k;
+    proxy_buffers 8 16k;
+    proxy_busy_buffers_size 16k;
+
+    upstream spring {
+         {{upstreamBlock}}
+         keepalive 32;
+    }
+    server {
+        listen {{nginxPort}};
+
+        location / {
+            proxy_pass http://spring/;
+
+            proxy_connect_timeout 120s;
+            proxy_send_timeout 120s;
+            proxy_read_timeout 120s;
+            send_timeout 120s;
+        }
+    }
+}
+
+events {
+    worker_connections 4096;
+}
